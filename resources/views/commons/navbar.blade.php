@@ -10,11 +10,12 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="#">Signup</a>
+          {!! link_to_route('signup.get', 'Signup', [], ['class' => 'nav-link']) !!}
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">Login</a>
          </li>
+            
        </ul>
   </div>
 </nav>
