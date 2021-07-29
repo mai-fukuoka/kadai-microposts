@@ -9,13 +9,29 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav ml-auto">
+        @if (Auth::check())
+        {{--ユーザー一覧ページ--}}
+        <li class="nav-item"><a href="#" class="nav-link">Users</a></li>
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">{{ Auth::user()->name}}</a>
+          <ul class="dropdown-menu dropdown-menu-right">
+              {{-- ユーザ詳細ページへのリンク --}}
+              <li class="dropdown-item"><a href="#">My profile</a></li>
+              <li class="dropdown-divider"></li>
+              {{-- ログアウトへのリンク --}}
+              <li class="dropdown-item">{!! link_to_route('logout.get', 'Logout') !!}</li>
+          </ul>
+        </li>
+        @else
+        {{-- ユーザー登録ページのリンク --}}
         <li class="nav-item">
           {!! link_to_route('signup.get', 'Signup', [], ['class' => 'nav-link']) !!}
         </li>
+        {{--ログインのリンク --}}
         <li class="nav-item">
-          <a class="nav-link" href="#">Login</a>
+          {!! link_to_route('login', 'Login', [], ['class' => 'nav-link']) !!}
          </li>
-            
+        @endif  
        </ul>
   </div>
 </nav>
