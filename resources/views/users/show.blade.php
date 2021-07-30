@@ -16,12 +16,18 @@
     <div class="co-sm-8">
         <ul class="nav nav-tabs nav-justified mb-3">
             {{--ユーザー詳細タブ--}}
-            <li class="nav-item"><p>TimeLine</p></li>
+            <li class="nav-item">
+                <a href"{{ route('users.show',['user'=>$user-id]) }}" class="nav-link {{ Request::routeIs('users.show') ? 'active' : '' }}">
+                        TimeLine<span class="badge badge-secondary">{{ $user->microposts_count }}</span>
             {{-- フォロー一覧タブ --}}
             <li class="nav-item"><p>Followings</p></li>
             {{-- フォロワー一覧タブ --}}
             <li class="nav-item"><p>Followers</p></li>
         </ul>
+        @if(Auth::id()==$user->id)
+            @include('microposts.form')
+        @endif
+        @include('microposts.microposts')
     </div>
 </div>
 @endsection
