@@ -132,6 +132,45 @@ class User extends Authenticatable
     //カウントする。
     public function loadRelationshipCounts()
     {
-        $this->loadCount('microposts', 'followings', 'followers');
+        $this->loadCount('microposts', 'followings', 'followers', 'favorites');
+    }
+    
+    //このユーザーがお気に入りしているmicropostのid
+    public function favorites()
+    {
+        return $this->belongsToMany(Micropost::class, 'favorites', 'user_id', 'micropost_id')->withTimestamps();
+    }
+    
+    public function favorite($micropostId)
+    {
+        // すでにお気に入りしているかの確認
+        $exist=$this->is_favoriting($micropostId);
+        
+        if ($exist) {
+            // すでにお気に入りしていれば何もしない
+            return false;
+        } else {
+            $this->favorites()->attach($micropostId);
+            return true;
+        }
+    }
+    
+    public function unfavorite($micropostId)
+    {
+        // すでにお気に入りしているかの確認
+        $exist=$this->is_favoriting($micropostId);
+        
+        if ($exist) {
+            // すでにお気に入りしていれば外す
+            $this->favorites()->detach($micropostId);
+        } else {
+            return false;
+        }
+    }
+    
+    public function is_favoriting($micropostId)
+    {
+        // お気に入り中ツイートに $userIdのものが存在するか
+        return $this->favorites()->where('micropost_id', $micropostId)->exists();
     }
 }
